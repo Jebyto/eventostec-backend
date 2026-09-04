@@ -1,6 +1,6 @@
 package com.eventostec.api.service;
 
-import com.eventostec.api.adapters.outbound.repositories.EventRepository;
+import com.eventostec.api.adapters.outbound.repositories.JpaEventRepository;
 import com.eventostec.api.application.service.AddressService;
 import com.eventostec.api.application.service.CouponService;
 import com.eventostec.api.application.service.EventService;
@@ -42,7 +42,7 @@ class EventServiceTest {
     private CouponService couponService;
 
     @Mock
-    private EventRepository repository;
+    private JpaEventRepository repository;
 
     @InjectMocks
     private EventService eventService;
