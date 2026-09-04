@@ -1,7 +1,11 @@
 package com.eventostec.api.service;
 
+import com.eventostec.api.adapters.outbound.repositories.EventRepository;
+import com.eventostec.api.application.service.AddressService;
+import com.eventostec.api.application.service.CouponService;
+import com.eventostec.api.application.service.EventService;
 import com.eventostec.api.domain.event.*;
-import com.eventostec.api.repositories.EventRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -59,7 +63,8 @@ class EventServiceTest {
 
     @Test
     void test_shouldSaveEvent() {
-        EventRequestDTO requestDTO = new EventRequestDTO("Evento Teste", "Descrição do evento", new Date().getTime(), "Cidade Teste", "UF", true, "https://evento.com", null);
+        EventRequestDTO requestDTO = new EventRequestDTO("Evento Teste", "Descrição do evento", new Date().getTime(),
+                "Cidade Teste", "UF", true, "https://evento.com", null);
         Event event = new Event();
 
         when(repository.save(any(Event.class))).thenReturn(event);
@@ -138,12 +143,15 @@ class EventServiceTest {
         List<EventAddressProjection> events = List.of(mock(EventAddressProjection.class));
         Page<EventAddressProjection> eventsPage = new PageImpl<>(events);
 
-        when(repository.findFilteredEvents(anyString(), anyString(), any(Date.class), any(Date.class), eq(pageable))).thenReturn(eventsPage);
+        when(repository.findFilteredEvents(anyString(), anyString(), any(Date.class), any(Date.class), eq(pageable)))
+                .thenReturn(eventsPage);
 
-        List<EventResponseDTO> result = eventService.getFilteredEvents(0, 10, "Cidade Teste", "UF", new Date(), new Date());
+        List<EventResponseDTO> result = eventService.getFilteredEvents(0, 10, "Cidade Teste", "UF", new Date(),
+                new Date());
 
         assertFalse(result.isEmpty());
-        verify(repository, times(1)).findFilteredEvents(anyString(), anyString(), any(Date.class), any(Date.class), eq(pageable));
+        verify(repository, times(1)).findFilteredEvents(anyString(), anyString(), any(Date.class), any(Date.class),
+                eq(pageable));
     }
 
     @Test
@@ -151,7 +159,8 @@ class EventServiceTest {
         MultipartFile multipartFile = mock(MultipartFile.class);
         when(multipartFile.getBytes()).thenReturn(new byte[0]);
         when(multipartFile.getOriginalFilename()).thenReturn("imagem.jpg");
-        when(s3Utilities.getUrl(any(GetUrlRequest.class))).thenReturn(URI.create("https://s3.amazonaws.com/teste/imagem.jpg").toURL());
+        when(s3Utilities.getUrl(any(GetUrlRequest.class)))
+                .thenReturn(URI.create("https://s3.amazonaws.com/teste/imagem.jpg").toURL());
 
         ReflectionTestUtils.setField(eventService, "bucketName", bucketName);
         String result = ReflectionTestUtils.invokeMethod(eventService, "uploadImg", multipartFile);

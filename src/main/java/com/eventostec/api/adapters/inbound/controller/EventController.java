@@ -1,10 +1,11 @@
-package com.eventostec.api.controller;
+package com.eventostec.api.adapters.inbound.controller;
 
+import com.eventostec.api.application.service.EventService;
 import com.eventostec.api.domain.event.Event;
 import com.eventostec.api.domain.event.EventDetailsDTO;
 import com.eventostec.api.domain.event.EventRequestDTO;
 import com.eventostec.api.domain.event.EventResponseDTO;
-import com.eventostec.api.service.EventService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,18 +36,19 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EventResponseDTO>> getEvents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<List<EventResponseDTO>> getEvents(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<EventResponseDTO> allEvents = this.eventService.getUpcomingEvents(page, size);
         return ResponseEntity.ok(allEvents);
     }
 
     @GetMapping("/filter")
     public ResponseEntity<List<EventResponseDTO>> getFilteredEvents(@RequestParam(defaultValue = "0") int page,
-                                                                    @RequestParam(defaultValue = "10") int size,
-                                                                    @RequestParam String city,
-                                                                    @RequestParam String uf,
-                                                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-                                                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam String city,
+            @RequestParam String uf,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
         List<EventResponseDTO> events = eventService.getFilteredEvents(page, size, city, uf, startDate, endDate);
         return ResponseEntity.ok(events);
     }

@@ -1,10 +1,11 @@
-package com.eventostec.api.service;
+package com.eventostec.api.application.service;
 
+import com.eventostec.api.adapters.outbound.repositories.EventRepository;
 import com.eventostec.api.domain.address.Address;
 import com.eventostec.api.domain.coupon.Coupon;
 import com.eventostec.api.domain.event.*;
-import com.eventostec.api.mappers.EventMapper;
-import com.eventostec.api.repositories.EventRepository;
+import com.eventostec.api.utils.mappers.EventMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,6 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-
 
 import java.nio.ByteBuffer;
 import java.util.Date;
@@ -49,7 +49,6 @@ public class EventService {
     public Event createEvent(EventRequestDTO data) {
         String imgUrl = "";
 
-
         if (data.image() != null) {
             imgUrl = this.uploadImg(data.image());
         }
@@ -67,16 +66,15 @@ public class EventService {
         Pageable pageable = PageRequest.of(page, size);
         Page<EventAddressProjection> eventsPage = this.repository.findUpcomingEvents(new Date(), pageable);
         return eventsPage.map(event -> new EventResponseDTO(
-                        event.getId(),
-                        event.getTitle(),
-                        event.getDescription(),
-                        event.getDate(),
-                        event.getCity() != null ? event.getCity() : "",
-                        event.getUf() != null ? event.getUf() : "",
-                        event.getRemote(),
-                        event.getEventUrl(),
-                        event.getImgUrl())
-                )
+                event.getId(),
+                event.getTitle(),
+                event.getDescription(),
+                event.getDate(),
+                event.getCity() != null ? event.getCity() : "",
+                event.getUf() != null ? event.getUf() : "",
+                event.getRemote(),
+                event.getEventUrl(),
+                event.getImgUrl()))
                 .stream().toList();
     }
 
@@ -107,8 +105,8 @@ public class EventService {
                 couponDTOs);
     }
 
-    public void deleteEvent(UUID eventId, String adminKey){
-        if(adminKey == null || !adminKey.equals(this.adminKey)){
+    public void deleteEvent(UUID eventId, String adminKey) {
+        if (adminKey == null || !adminKey.equals(this.adminKey)) {
             throw new IllegalArgumentException("Invalid admin key");
         }
 
@@ -117,25 +115,25 @@ public class EventService {
 
     }
 
-    public List<EventResponseDTO> searchEvents(String title){
+    public List<EventResponseDTO> searchEvents(String title) {
         title = (title != null) ? title : "";
 
         List<EventAddressProjection> eventsList = this.repository.findEventsByTitle(title);
         return eventsList.stream().map(event -> new EventResponseDTO(
-                        event.getId(),
-                        event.getTitle(),
-                        event.getDescription(),
-                        event.getDate(),
-                        event.getCity() != null ? event.getCity() : "",
-                        event.getUf() != null ? event.getUf() : "",
-                        event.getRemote(),
-                        event.getEventUrl(),
-                        event.getImgUrl())
-                )
+                event.getId(),
+                event.getTitle(),
+                event.getDescription(),
+                event.getDate(),
+                event.getCity() != null ? event.getCity() : "",
+                event.getUf() != null ? event.getUf() : "",
+                event.getRemote(),
+                event.getEventUrl(),
+                event.getImgUrl()))
                 .toList();
     }
 
-    public List<EventResponseDTO> getFilteredEvents(int page, int size, String city, String uf, Date startDate, Date endDate){
+    public List<EventResponseDTO> getFilteredEvents(int page, int size, String city, String uf, Date startDate,
+            Date endDate) {
         city = (city != null) ? city : "";
         uf = (uf != null) ? uf : "";
         startDate = (startDate != null) ? startDate : new Date(0);
@@ -143,18 +141,18 @@ public class EventService {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<EventAddressProjection> eventsPage = this.repository.findFilteredEvents(city, uf, startDate, endDate, pageable);
+        Page<EventAddressProjection> eventsPage = this.repository.findFilteredEvents(city, uf, startDate, endDate,
+                pageable);
         return eventsPage.map(event -> new EventResponseDTO(
-                        event.getId(),
-                        event.getTitle(),
-                        event.getDescription(),
-                        event.getDate(),
-                        event.getCity() != null ? event.getCity() : "",
-                        event.getUf() != null ? event.getUf() : "",
-                        event.getRemote(),
-                        event.getEventUrl(),
-                        event.getImgUrl())
-                )
+                event.getId(),
+                event.getTitle(),
+                event.getDescription(),
+                event.getDate(),
+                event.getCity() != null ? event.getCity() : "",
+                event.getUf() != null ? event.getUf() : "",
+                event.getRemote(),
+                event.getEventUrl(),
+                event.getImgUrl()))
                 .stream().toList();
     }
 

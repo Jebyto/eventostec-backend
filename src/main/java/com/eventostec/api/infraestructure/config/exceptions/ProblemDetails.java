@@ -1,4 +1,4 @@
-package com.eventostec.api.exceptions.config;
+package com.eventostec.api.infraestructure.config.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Based on RFC7807(<a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem Details for HTTP APIs</a>)
+ * Based on
+ * RFC7807(<a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem
+ * Details for HTTP APIs</a>)
  */
 @Getter
 @Setter

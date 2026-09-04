@@ -1,10 +1,12 @@
 package com.eventostec.api.service;
 
+import com.eventostec.api.adapters.outbound.repositories.CouponRepository;
+import com.eventostec.api.adapters.outbound.repositories.EventRepository;
+import com.eventostec.api.application.service.CouponService;
 import com.eventostec.api.domain.coupon.Coupon;
 import com.eventostec.api.domain.coupon.CouponRequestDTO;
 import com.eventostec.api.domain.event.Event;
-import com.eventostec.api.repositories.CouponRepository;
-import com.eventostec.api.repositories.EventRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

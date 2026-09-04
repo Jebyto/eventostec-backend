@@ -1,8 +1,9 @@
 package com.eventostec.api.controller;
 
+import com.eventostec.api.adapters.inbound.controller.CouponController;
+import com.eventostec.api.application.service.CouponService;
 import com.eventostec.api.domain.coupon.Coupon;
 import com.eventostec.api.domain.coupon.CouponRequestDTO;
-import com.eventostec.api.service.CouponService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,8 @@ class CouponControllerTest {
         when(couponService.addCouponToEvent(eventId, requestDTO)).thenReturn(responseCoupon);
 
         mockMvc.perform(post("/api/coupon/event/{eventId}", eventId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestDTO)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isOk());
     }
 }

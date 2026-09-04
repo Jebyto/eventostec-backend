@@ -1,10 +1,11 @@
-package com.eventostec.api.service;
+package com.eventostec.api.application.service;
 
+import com.eventostec.api.adapters.outbound.repositories.CouponRepository;
+import com.eventostec.api.adapters.outbound.repositories.EventRepository;
 import com.eventostec.api.domain.coupon.Coupon;
 import com.eventostec.api.domain.coupon.CouponRequestDTO;
 import com.eventostec.api.domain.event.Event;
-import com.eventostec.api.repositories.CouponRepository;
-import com.eventostec.api.repositories.EventRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,4 +37,3 @@ public class CouponService {
         return couponRepository.findByEventIdAndValidAfter(eventId, currentDate);
     }
 }
-

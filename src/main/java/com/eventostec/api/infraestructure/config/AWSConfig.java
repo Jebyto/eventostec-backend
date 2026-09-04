@@ -1,8 +1,9 @@
-package com.eventostec.api.config;
+package com.eventostec.api.infraestructure.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -26,7 +27,8 @@ public class AWSConfig {
 
         if (accessKeyId != null && !accessKeyId.isEmpty() &&
                 secretAccessKey != null && !secretAccessKey.isEmpty()) {
-            s3ClientBuilder.credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKeyId, secretAccessKey)));
+            s3ClientBuilder.credentialsProvider(
+                    StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKeyId, secretAccessKey)));
         }
 
         return s3ClientBuilder.build();

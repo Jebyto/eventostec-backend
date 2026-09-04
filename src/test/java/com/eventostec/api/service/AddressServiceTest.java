@@ -1,9 +1,11 @@
 package com.eventostec.api.service;
 
+import com.eventostec.api.adapters.outbound.repositories.AddressRepository;
+import com.eventostec.api.application.service.AddressService;
 import com.eventostec.api.domain.address.Address;
 import com.eventostec.api.domain.event.Event;
 import com.eventostec.api.domain.event.EventRequestDTO;
-import com.eventostec.api.repositories.AddressRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,7 +35,8 @@ class AddressServiceTest {
     void test_shouldSaveAddress() {
         Event event = new Event();
         event.setId(UUID.randomUUID());
-        EventRequestDTO data = new EventRequestDTO("Teste Evento", "Descricao Evento", System.currentTimeMillis(), "Cidade Teste", "UF", true, "https://evento.com", null);
+        EventRequestDTO data = new EventRequestDTO("Teste Evento", "Descricao Evento", System.currentTimeMillis(),
+                "Cidade Teste", "UF", true, "https://evento.com", null);
         Address address = new Address();
         address.setCity(data.city());
         address.setUf(data.state());
